@@ -1,6 +1,13 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { faRankingStar, faGear, faCircleQuestion, faShieldHalved } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import ModalPrivacy from './components/modal-privacy'
+import ModalRanking from './components/modal-ranking'
+import ModalSettings from './components/modal-settings'
+import ModalTuto from './components/modal-tuto'
+import PageContainer from './components/page-container'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,7 +23,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <PageContainer>
+          {children}
+        </PageContainer>
+      </body>
     </html>
   )
 }
