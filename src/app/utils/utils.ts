@@ -1,3 +1,5 @@
-import { format, toDate, utcToZonedTime } from "date-fns-tz";
 
-export const getCurrentZonedDate = () => utcToZonedTime(toDate(format(Date.now(), 'yyyy-MM-dd', { timeZone: 'Pacific/Tahiti' })), 'Pacific/Tahiti');
+
+export function mod(n: number, m: number) {
+  return ((n % m) + m) % m;
+}

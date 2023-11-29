@@ -7,11 +7,19 @@ import 'simple-keyboard/build/css/index.css';
 import { GameWord } from "../model/game-word";
 import { RoundResult } from "../model/round-result";
 import ModalResult from "./modal-result";
+import { differenceInHours, startOfDay } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
+import { mod } from "../utils/utils";
 
 enum Correctness {
   CORRECT,
   MISPLACED,
   INCORRECT
+}
+
+interface PointDetails {
+  nbPointsSpeed: number,
+  nbPointsTries: number
 }
 
 const layout: KeyboardLayoutObject = {
@@ -61,6 +69,7 @@ export default function GameComponent({ word }: GameComponentProps) {
   const [isShiftActive, setIsShiftActive] = useState(false);
   const [roundResult, setRoundResult] = useState<RoundResult>(RoundResult.ONGOING);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pointDetails, setPointDetails] = useState<PointDetails>();
   const keyboard = useRef();
 
   // trigger once after loading the DOM
@@ -115,7 +124,20 @@ export default function GameComponent({ word }: GameComponentProps) {
   }
 
   const computePoints = () => {
-
+    // points for speed
+    const now = Date.now();
+    const dayStartZoned: Date = startOfDay(utcToZonedTime(now, 'Pacific/Tahiti'));
+    let diffHours: number = differenceInHours(now, dayStartZoned);
+    if (diffHours > 24) {
+      diffHours = 24;
+    }
+    const nbPointsSpeed: number = mod(24 - diffHours, 24) * 100;
+    // points for number of tries
+    const nbPointsTries = (6 - tryIndex) * 10;
+    setPointDetails({
+      nbPointsSpeed: nbPointsSpeed,
+      nbPointsTries: nbPointsTries
+    });
   }
 
   const submitInput = () => {
@@ -123,6 +145,7 @@ export default function GameComponent({ word }: GameComponentProps) {
       const checkWordResult: Correctness[] = checkWord();
       updateColors(checkWordResult);
       if (isWin(checkWordResult)) {
+        computePoints();
         setRoundResult(RoundResult.WIN);
       } else if (tryIndex === 5) {
         // not a win and reached the end

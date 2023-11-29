@@ -4,10 +4,9 @@ import Papa from 'papaparse';
 import { DictEntry } from '@/app/model/dict-entry';
 import { NextRequest, NextResponse } from 'next/server';
 import { differenceInDays } from 'date-fns';
-import { WordDto } from '@/app/model/word-dto';
 import AES from 'crypto-js/aes';
 import { format, toDate, utcToZonedTime } from 'date-fns-tz';
-import { getCurrentZonedDate } from '@/app/utils/utils';
+import { mod } from '@/app/utils/utils';
 
 const initialDate = utcToZonedTime(toDate('2023-11-28T00:00:00-10:00'), 'Pacific/Tahiti');
 
@@ -33,10 +32,6 @@ const parseCSV = (filePath: string): Promise<DictEntry[]> => {
   });
 };
 
-function mod(n: number, m: number) {
-  return ((n % m) + m) % m;
-}
-
 export async function GET(request: NextRequest) {
   try {
     // Construct the path to the CSV file
@@ -49,7 +44,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({error: 'Aucun mot trouvé'});
     }
 
-    const now = getCurrentZonedDate();
+    const now = Date.now();
 
     const index = mod(differenceInDays(now, initialDate), dictEntries.length);
 

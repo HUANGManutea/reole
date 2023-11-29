@@ -51,10 +51,6 @@ export default function PageContainer({children} : PageContainerProps) {
     </div>
     <div className="drawer-side">
       <label htmlFor="sideDrawer" aria-label="close sidebar" className="drawer-overlay"></label>
-      {/* <ul className="menu p-4 w-80 min-h-full bg-base-200">
-        <li><a>Sidebar Item 1</a></li>
-        <li><a>Sidebar Item 2</a></li>
-      </ul> */}
       <div className="flex flex-col w-80 min-h-full bg-base-200 p-4 text-justify gap-5">
         <div className="flex flex-col gap-2">
           <h2 className="text-xl">A propos</h2>

@@ -4,12 +4,11 @@ import { WordDto } from "./model/word-dto";
 import AES from 'crypto-js/aes';
 import Utf8 from 'crypto-js/enc-utf8';
 import { DictEntry } from "./model/dict-entry";
-import { getCurrentZonedDate } from "./utils/utils";
 import { GameWord } from "./model/game-word";
 
 export default async function Home() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
-  const now = getCurrentZonedDate();
+  const now = Date.now();
 
   const wordDtoResult = await fetch(`${baseUrl}/api/word`, {cache: "no-cache"});
   const wordDto: WordDto = await wordDtoResult.json();
