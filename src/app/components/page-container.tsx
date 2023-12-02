@@ -50,11 +50,11 @@ export default function PageContainer({children} : PageContainerProps) {
       <div className="flex flex-col w-80 min-h-full bg-base-200 p-4 text-justify gap-5">
         <div className="flex flex-col gap-2">
           <h2 className="text-xl">A propos</h2>
-          <p>La création de ce site a nécessité l'utilisation de l'appplication mobile Reo. (<Link href="https://play.google.com/store/apps/details?id=pf.culture.sti.reo&hl=ln" className="underline text-primary">Play store</Link>/<Link href="https://apps.apple.com/fr/app/reo/id1245650858" className="underline text-primary">App store</Link>)</p>
-          <p>Il n'y a pas d'affiliations avec Reo, mais j'en ai eu grandement besoin, et je remercie les créateurs de cette application sans quoi j'aurai pris beaucoup plus de temps.</p>
+          <p>{"La création de ce site a nécessité l'utilisation de l'appplication mobile Reo."} (<Link href="https://play.google.com/store/apps/details?id=pf.culture.sti.reo&hl=ln" className="underline text-primary">Play store</Link>/<Link href="https://apps.apple.com/fr/app/reo/id1245650858" className="underline text-primary">App store</Link>)</p>
+          <p>{"Il n'y a pas d'affiliations avec Reo, mais j'en ai eu grandement besoin, et je remercie les créateurs de cette application sans quoi j'aurai pris beaucoup plus de temps."}</p>
           <p>Les icônes proviennent de <Link href="https://fontawesome.com/" className="underline text-primary">Font Awesome</Link>.</p>
-          <p>Le nom "REOLE" est un jeux de mot entre "reo" et <Link href="https://www.nytimes.com/games/wordle/index.html" className="underline text-primary">Wordle</Link>, dont ce site s'inspire très fortement.</p>
-          <p>Ce site n'a aucun but lucratif. Il est hébergé à titre gracieux et libre d'utilisation.</p>
+          <p>{"Le nom \"REOLE\" est un jeux de mot entre \"reo\" et"} <Link href="https://www.nytimes.com/games/wordle/index.html" className="underline text-primary">Wordle</Link>{", dont ce site s'inspire très fortement."}</p>
+          <p>{"Ce site n'a aucun but lucratif. Il est hébergé à titre gracieux et libre d'utilisation."}</p>
         </div>
         <div className="flex flex-col gap-2">
           <h2 className="text-xl">Contact</h2>
