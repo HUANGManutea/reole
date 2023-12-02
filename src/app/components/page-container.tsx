@@ -53,7 +53,7 @@ export default function PageContainer({children} : PageContainerProps) {
           <p>La création de ce site a nécessité l&apos;utilisation de l&apos;appplication mobile Reo. (<Link href="https://play.google.com/store/apps/details?id=pf.culture.sti.reo&hl=ln" className="underline text-primary">Play store</Link>/<Link href="https://apps.apple.com/fr/app/reo/id1245650858" className="underline text-primary">App store</Link>)</p>
           <p>Il n&apos;y a pas d&apos;affiliations avec Reo, mais j&apos;en ai eu grandement besoin, et je remercie les créateurs de cette application sans quoi j&apos;aurai pris beaucoup plus de temps.</p>
           <p>Les icônes proviennent de <Link href="https://fontawesome.com/" className="underline text-primary">Font Awesome</Link>.</p>
-          <p>Le nom "REOLE" est un jeux de mot entre "reo" et <Link href="https://www.nytimes.com/games/wordle/index.html" className="underline text-primary">Wordle</Link>, dont ce site s&apos;inspire très fortement.</p>
+          <p>Le nom &quot;REOLE&quot; est un jeux de mot entre &quot;reo&quot; et <Link href="https://www.nytimes.com/games/wordle/index.html" className="underline text-primary">Wordle</Link>, dont ce site s&apos;inspire très fortement.</p>
           <p>Ce site n&apos;a aucun but lucratif. Il est hébergé à titre gracieux et libre d&apos;utilisation.</p>
         </div>
         <div className="flex flex-col gap-2">
