@@ -1,18 +1,74 @@
-import { format } from "date-fns-tz";
+import { format, toDate, utcToZonedTime } from "date-fns-tz";
 import GameComponent from "./components/game-component";
 import { WordDto } from "./model/word-dto";
 import AES from 'crypto-js/aes';
 import Utf8 from 'crypto-js/enc-utf8';
 import { DictEntry } from "./model/dict-entry";
 import { GameWord } from "./model/game-word";
+import { differenceInDays } from "date-fns";
+import Papa from "papaparse";
+import path from "path";
+import { mod } from "./utils/utils";
+import fs from 'fs';
+
+const initialDate = utcToZonedTime(toDate('2023-11-28T08:00:00-10:00'), 'Pacific/Tahiti');
+
+// Function to parse the CSV
+const parseCSV = (filePath: string): Promise<DictEntry[]> => {
+  return new Promise((resolve, reject) => {
+    const csvFile = fs.createReadStream(filePath);
+    const data: DictEntry[] = [];
+
+    Papa.parse<DictEntry>(csvFile, {
+      header: true,
+      step: (result) => {
+        // Push each row into the data array after casting it to DictEntry
+        data.push(result.data as DictEntry);
+      },
+      complete: () => {
+        resolve(data);
+      },
+      error: (error) => {
+        reject(error);
+      },
+    });
+  });
+};
+
+export async function getWord(dateString: string): Promise<WordDto> {
+  try {
+    const date = toDate(dateString, { timeZone: 'Pacific/Tahiti' });
+
+    // Construct the path to the CSV file
+    const filePath = path.join(process.cwd(), 'src', 'app', 'data', 'dict_shuffle.csv');
+
+    // Parse the CSV file
+    const dictEntries: DictEntry[] = await parseCSV(filePath);
+
+    if (dictEntries.length === 0) {
+      return { error: 'Aucun mot trouvé' };
+    }
+
+    const index = mod(differenceInDays(date, initialDate), dictEntries.length);
+
+    const key = format(date, 'yyyy-MM-dd', { timeZone: 'Pacific/Tahiti' });
+
+    const encryptedWord = AES.encrypt(JSON.stringify(dictEntries[index]), key).toString();
+
+    // Send the parsed data in the response
+    return { encryptedWord: encryptedWord };
+  } catch (error) {
+    console.log(error);
+    return { error: 'erreur lors de la récupération du mot' };
+    // If there's an error parsing the CSV, send a 500 response
+  }
+}
 
 export default async function Home() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
   const now = Date.now();
   const nowParam = format(now, 'yyyy-MM-dd', { timeZone: 'Pacific/Tahiti' });
 
-  const wordDtoResult = await fetch(`${baseUrl}/api/word?date=${nowParam}`);
-  const wordDto: WordDto = await wordDtoResult.json();
+  const wordDto: WordDto = await getWord(nowParam);
   if (wordDto.error) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-between p-5 sm:p-10">
