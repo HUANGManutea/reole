@@ -3,7 +3,7 @@ import path from 'path';
 import Papa from 'papaparse';
 import { DictEntry } from '@/app/model/dict-entry';
 import { NextRequest, NextResponse } from 'next/server';
-import { differenceInDays } from 'date-fns';
+import { differenceInDays, parse } from 'date-fns';
 import AES from 'crypto-js/aes';
 import { format, toDate, utcToZonedTime } from 'date-fns-tz';
 import { mod } from '@/app/utils/utils';
@@ -34,6 +34,17 @@ const parseCSV = (filePath: string): Promise<DictEntry[]> => {
 
 export async function GET(request: NextRequest) {
   try {
+    // get date search param
+    const searchParams = request.nextUrl.searchParams;
+
+    const dateString = searchParams.get('date');
+
+    if (!dateString) {
+      return NextResponse.json({error: 'Aucune date spécifiée'});
+    }
+
+    const date = toDate(dateString, { timeZone: 'Pacific/Tahiti' });
+
     // Construct the path to the CSV file
     const filePath = path.join(process.cwd(), 'src', 'app', 'data', 'dict_shuffle.csv');
     
@@ -44,11 +55,9 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({error: 'Aucun mot trouvé'});
     }
 
-    const now = Date.now();
+    const index = mod(differenceInDays(date, initialDate), dictEntries.length);
 
-    const index = mod(differenceInDays(now, initialDate), dictEntries.length);
-
-    const key = format(now, 'yyyy-MM-dd HH:mm:ss', { timeZone: 'Pacific/Tahiti' });
+    const key = format(date, 'yyyy-MM-dd', { timeZone: 'Pacific/Tahiti' });
 
     const encryptedWord = AES.encrypt(JSON.stringify(dictEntries[index]), key).toString();
     

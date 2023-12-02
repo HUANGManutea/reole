@@ -9,8 +9,9 @@ import { GameWord } from "./model/game-word";
 export default async function Home() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
   const now = Date.now();
+  const nowParam = format(now, 'yyyy-MM-dd', { timeZone: 'Pacific/Tahiti' });
 
-  const wordDtoResult = await fetch(`${baseUrl}/api/word`, { cache: "no-cache" });
+  const wordDtoResult = await fetch(`${baseUrl}/api/word?date=${nowParam}`);
   const wordDto: WordDto = await wordDtoResult.json();
   if (wordDto.error) {
     return (
@@ -23,7 +24,7 @@ export default async function Home() {
   }
 
   const encryptedWord: string = wordDto.encryptedWord!;
-  const key = format(now, 'yyyy-MM-dd HH:mm:ss', { timeZone: 'Pacific/Tahiti' });
+  const key = format(now, 'yyyy-MM-dd', { timeZone: 'Pacific/Tahiti' });
   let gameWord: GameWord | null = null;
   try {
     const wordString = AES.decrypt(encryptedWord, key).toString(Utf8);
