@@ -9,8 +9,8 @@ export default function ModalTuto() {
         </form>
         <h3 className="font-bold text-lg">Comment jouer?</h3>
         <p className="py-2">Chaque jour, à partir de 8h00, vous devez deviner un mot aléatoire en tahitien, de 5 lettres.</p>
-        <p className="py-2">Vous pouvez taper avec votre clavier, ou utiliser le clavier virtuel adapté à la langue tahitienne, tapez la touche "entrée" pour valider une tentative.</p>
-        <p className="py-2">{"Au cas où, le 'eta est une consonne, et compte donc comme une lettre, le 'eta correspond à la touche \"apostrophe\" du clavier."}</p>
+        <p className="py-2">Vous pouvez taper avec votre clavier, ou utiliser le clavier virtuel adapté à la langue tahitienne, tapez la touche &quot;entrée&quot; pour valider une tentative.</p>
+        <p className="py-2">Au cas où, le &apos;eta est une consonne, et compte donc comme une lettre, le &apos;eta correspond à la touche &quot;apostrophe&quot; du clavier.</p>
         <p className="py-2">Vous avez 6 tentatives au total, vous gagnez si vous trouvez le mot en 6 tentatives ou moins.</p>
         <p className="py-2">Une fois la tentative validée, les cases seront colorés tels que:</p>
         <ul className="flex flex-col gap-2">
@@ -29,7 +29,7 @@ export default function ModalTuto() {
           <li>
             <div className="flex flex-row items-center gap-2">
               <div className="h-16 w-16 text-xl text-bold text-center border text-white flex flex-col items-center justify-center"><span>A</span></div>
-              <span>: {"la lettre n'existe pas dans le mot"}</span>
+              <span>: la lettre n&apos;existe pas dans le mot</span>
             </div>
           </li>
         </ul>
@@ -38,7 +38,7 @@ export default function ModalTuto() {
           <li>Plus vous répondez vite après que le mot soit généré, plus vous marquez de points.</li>
           <li>Moins vous faites de tentatives pour trouver le mot, plus vous marquez de points.</li>
         </ul>
-        <p className="py-2">{"Fa'aitoito !"}</p>
+        <p className="py-2">Fa&apos;aitoito !</p>
       </div>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>
