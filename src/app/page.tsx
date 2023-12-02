@@ -23,7 +23,7 @@ export default async function Home() {
   }
 
   const encryptedWord: string = wordDto.encryptedWord!;
-  const key = format(now, 'yyyy-MM-dd', { timeZone: 'Pacific/Tahiti' });
+  const key = format(now, 'yyyy-MM-dd HH:mm:ss', { timeZone: 'Pacific/Tahiti' });
   const wordString = AES.decrypt(encryptedWord, key).toString(Utf8);
   const word: DictEntry = JSON.parse(wordString);
   const gameWord: GameWord = {

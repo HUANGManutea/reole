@@ -8,7 +8,7 @@ import AES from 'crypto-js/aes';
 import { format, toDate, utcToZonedTime } from 'date-fns-tz';
 import { mod } from '@/app/utils/utils';
 
-const initialDate = utcToZonedTime(toDate('2023-11-28T00:00:00-10:00'), 'Pacific/Tahiti');
+const initialDate = utcToZonedTime(toDate('2023-11-28T08:00:00-10:00'), 'Pacific/Tahiti');
 
 // Function to parse the CSV
 const parseCSV = (filePath: string): Promise<DictEntry[]> => {
@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
 
     const index = mod(differenceInDays(now, initialDate), dictEntries.length);
 
-    const key = format(now, 'yyyy-MM-dd', { timeZone: 'Pacific/Tahiti' });
+    const key = format(now, 'yyyy-MM-dd HH:mm:ss', { timeZone: 'Pacific/Tahiti' });
 
     const encryptedWord = AES.encrypt(JSON.stringify(dictEntries[index]), key).toString();
     

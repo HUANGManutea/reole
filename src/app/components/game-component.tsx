@@ -10,16 +10,12 @@ import ModalResult from "./modal-result";
 import { differenceInHours, startOfDay } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import { mod } from "../utils/utils";
+import { PointDetails } from "../model/point-details";
 
 enum Correctness {
   CORRECT,
   MISPLACED,
   INCORRECT
-}
-
-interface PointDetails {
-  nbPointsSpeed: number,
-  nbPointsTries: number
 }
 
 const layout: KeyboardLayoutObject = {
@@ -97,7 +93,7 @@ export default function GameComponent({ word }: GameComponentProps) {
     for (let index = 0; index < tempInput.length; index++) {
       if (tempInput[index] === word.chars[index]) {
         result.push(Correctness.CORRECT);
-      } else if (word.lexeme.includes(tempInput[index])) {
+      } else if (word.lexeme.includes(tempInput[index].toLowerCase())) {
         result.push(Correctness.MISPLACED);
       } else {
         result.push(Correctness.INCORRECT);
@@ -126,7 +122,9 @@ export default function GameComponent({ word }: GameComponentProps) {
   const computePoints = () => {
     // points for speed
     const now = Date.now();
+    // we start at 8am Tahiti time
     const dayStartZoned: Date = startOfDay(utcToZonedTime(now, 'Pacific/Tahiti'));
+    dayStartZoned.setHours(8);
     let diffHours: number = differenceInHours(now, dayStartZoned);
     if (diffHours > 24) {
       diffHours = 24;
@@ -141,7 +139,7 @@ export default function GameComponent({ word }: GameComponentProps) {
   }
 
   const submitInput = () => {
-    if (input.length === 5 && tryIndex < 6) { // Ensure a complete input is given
+    if (charIndex === 5 && tryIndex < 6) { // Ensure a complete input is given
       const checkWordResult: Correctness[] = checkWord();
       updateColors(checkWordResult);
       if (isWin(checkWordResult)) {
@@ -251,7 +249,7 @@ export default function GameComponent({ word }: GameComponentProps) {
         display={display}
         layout={layout}
       />
-      <ModalResult roundResult={roundResult} word={word} isOpen={isModalOpen} />
+      <ModalResult roundResult={roundResult} word={word} isOpen={isModalOpen} pointDetails={pointDetails}/>
     </>
   );
 }
