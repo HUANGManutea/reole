@@ -10,7 +10,7 @@ export default async function Home() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
   const now = Date.now();
 
-  const wordDtoResult = await fetch(`${baseUrl}/api/word`, {cache: "no-cache"});
+  const wordDtoResult = await fetch(`${baseUrl}/api/word`, { cache: "no-cache" });
   const wordDto: WordDto = await wordDtoResult.json();
   if (wordDto.error) {
     return (
@@ -24,18 +24,32 @@ export default async function Home() {
 
   const encryptedWord: string = wordDto.encryptedWord!;
   const key = format(now, 'yyyy-MM-dd HH:mm:ss', { timeZone: 'Pacific/Tahiti' });
-  const wordString = AES.decrypt(encryptedWord, key).toString(Utf8);
-  const word: DictEntry = JSON.parse(wordString);
-  const gameWord: GameWord = {
-    lexeme: word.lexeme,
-    definition: word.definition,
-    chars: word.lexeme.toUpperCase().split('')
+  let gameWord: GameWord | null = null;
+  try {
+    const wordString = AES.decrypt(encryptedWord, key).toString(Utf8);
+    const word: DictEntry = JSON.parse(wordString);
+    gameWord = {
+      lexeme: word.lexeme,
+      definition: word.definition,
+      chars: word.lexeme.toUpperCase().split('')
+    }
+  } catch (error) {
+    console.error(error);
   }
+
+  if (gameWord) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-between p-5 sm:p-10">
+        <div className="flex flex-col max-w-[375px] sm:max-w-[500px] h-full items-center gap-10">
+          <GameComponent word={gameWord}></GameComponent>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-5 sm:p-10">
-      <div className="flex flex-col max-w-[375px] sm:max-w-[500px] h-full items-center gap-10">
-        <GameComponent word={gameWord}></GameComponent>
-      </div>
+      Erreur, veuillez recharger la page
     </main>
   )
 }
