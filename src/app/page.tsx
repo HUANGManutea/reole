@@ -35,7 +35,7 @@ const parseCSV = (filePath: string): Promise<DictEntry[]> => {
   });
 };
 
-export async function getWord(dateString: string): Promise<WordDto> {
+async function getWord(dateString: string): Promise<WordDto> {
   try {
     const date = toDate(dateString, { timeZone: 'Pacific/Tahiti' });
 
