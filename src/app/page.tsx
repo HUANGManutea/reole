@@ -1,4 +1,4 @@
-import { format, toDate, utcToZonedTime } from "date-fns-tz";
+import { format, toDate } from "date-fns-tz";
 import GameComponent from "./components/game-component";
 import { WordDto } from "./model/word-dto";
 import AES from 'crypto-js/aes';
@@ -11,8 +11,7 @@ import path from "path";
 import { mod } from "./utils/utils";
 import fs from 'fs';
 
-const initialDate = utcToZonedTime(toDate('2023-11-28T08:00:00-10:00'), 'Pacific/Tahiti');
-
+const initialDate = toDate('2023-11-28T08:00:00-10:00');
 // Function to parse the CSV
 const parseCSV = (filePath: string): Promise<DictEntry[]> => {
   return new Promise((resolve, reject) => {
